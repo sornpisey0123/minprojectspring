@@ -3,6 +3,7 @@ package com.kid.anh_thunh_nas.repository;
 import com.kid.anh_thunh_nas.model.dto.request.UserRequest;
 import com.kid.anh_thunh_nas.model.entity.User;
 import org.apache.ibatis.annotations.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -26,4 +27,11 @@ public interface UserRepository {
             SELECT email from Users;
             """)
     List<String> findAllEmail();
+
+    @Select("""
+            SELECT * FROM Users WHERE email = #{email}
+            """)
+    User findUserByEmail(String email);
+
+
 }
