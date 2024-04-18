@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.kid</groupId>
-    <artifactId>anh_thunh_nas</artifactId>
+    <artifactId>minprojectspringg1btb</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>anh_thunh_nas</name>
     <description>anh_thunh_nas</description>
