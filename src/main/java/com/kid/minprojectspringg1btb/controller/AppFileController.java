@@ -22,22 +22,6 @@ public class AppFileController {
     public AppFileController(AppFileService appFileService) {
         this.appFileService = appFileService;
     }
-//    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, value = "/upload")
-//    public ResponseEntity<FileUploadResponse> uploadFile(@RequestParam MultipartFile file) throws IOException {
-//        String fileName = appFileService.saveFile(file);
-//        FileUploadResponse appFileResponse = new FileUploadResponse(fileName, file.getContentType(), file.getSize());
-//        return ResponseEntity.status(HttpStatus.OK).body(appFileResponse);
-//    }
-
-//    @GetMapping
-//    public ResponseEntity<?> getAllFiles(@RequestParam String fileName) throws IOException {
-//        Resource resource = appFileService.getFileByFileName(fileName);
-//        return ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
-//                .contentType(MediaType.IMAGE_PNG)
-//                .body(resource);
-//    }
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Post Image")
     public ResponseEntity<?> postImage(@RequestParam MultipartFile file) throws IOException{

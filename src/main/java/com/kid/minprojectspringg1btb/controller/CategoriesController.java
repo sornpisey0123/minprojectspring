@@ -65,7 +65,7 @@ public class CategoriesController {
         BaseApiResponse<CategoryResponse> response = null;
         if (storeCategoryId){
             response = BaseApiResponse.<CategoryResponse>builder()
-                    .message("The category has been successfully created.")
+                    .message("The category has been successfully deleted.")
                     .status(HttpStatus.OK)
                     .time(new Timestamp(System.currentTimeMillis()))
                     .build();
@@ -96,7 +96,7 @@ public class CategoriesController {
             @RequestParam(name = "size",defaultValue = "5") Integer size
     ) {
         BaseApiResponse<List<CategoryResponse>> response = BaseApiResponse.<List<CategoryResponse>>builder()
-                .message("All categories have been successfully founded.💓")
+                .message("All categories have been successfully founded.")
                 .payload(categoryService.getAllCategories(page, size))
                 .status(HttpStatus.OK)
                 .time(new Timestamp(System.currentTimeMillis()))

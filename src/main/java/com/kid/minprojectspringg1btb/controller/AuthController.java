@@ -10,7 +10,6 @@ import com.kid.minprojectspringg1btb.model.dto.response.UserResponse;
 import com.kid.minprojectspringg1btb.model.entity.User;
 import com.kid.minprojectspringg1btb.service.UserService;
 import jakarta.validation.Valid;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,7 +27,6 @@ import javax.swing.text.StyledEditorKit;
 @RequestMapping("/api/v1/auths")
 public class AuthController {
     private final AuthenticationManager authenticationManager;
-
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserService userService;
     private final JwtService jwtService;
@@ -51,14 +49,7 @@ public class AuthController {
         return user.getUserId();
 
     }
-//    @PostMapping("/login")
-//    public ResponseEntity<?> authenticate(@RequestBody AuthRequest authRequest) throws Exception {
-//        authenticate(authRequest.getEmail(), authRequest.getPassword());
-//        final UserDetails userDetails = userService.loadUserByUsername(authRequest.getEmail());
-//        final String token = jwtService.generateToken(userDetails);
-//        AuthResponse authResponse = new AuthResponse(token);
-//        return ResponseEntity.ok(authResponse);
-//    }
+
     private void authenticate(String email, String password) throws Exception {
         try {
             UserDetails userApp = userService.loadUserByUsername(email);
@@ -92,11 +83,8 @@ public class AuthController {
     //check verify( true/false)
     @PostMapping("/resend")
     public ResponseEntity<String> resendEmail( @RequestParam String email) throws Exception {
-        System.out.println(email);
         Boolean isValidUser = userService.resend(email);
         if(isValidUser){
-
-//            userService.verify(opt);
             return ResponseEntity.ok("Resend otp code successful");
         }
         return ResponseEntity.badRequest().body("Invalid Email");

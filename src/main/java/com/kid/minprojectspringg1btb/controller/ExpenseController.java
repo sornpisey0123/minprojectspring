@@ -2,7 +2,6 @@ package com.kid.minprojectspringg1btb.controller;
 
 import com.kid.minprojectspringg1btb.model.dto.request.ExpenseRequest;
 import com.kid.minprojectspringg1btb.model.dto.response.BaseApiResponse;
-import com.kid.minprojectspringg1btb.model.dto.response.CategoryResponse;
 import com.kid.minprojectspringg1btb.model.entity.Expense;
 import com.kid.minprojectspringg1btb.service.ExpenseService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,8 +30,6 @@ public class ExpenseController {
                 .getPrincipal();
         return userDetails.getUsername();
     }
-
-
     @PostMapping
     public ResponseEntity<BaseApiResponse<Expense>> addNewExpense(@Valid @RequestBody ExpenseRequest expenseRequest) {
         String userEmail = getUsernameOfCurrentUser();
@@ -79,12 +76,10 @@ public class ExpenseController {
             @RequestParam(name = "sortBy",defaultValue = "expense_id") String sortBy,
             @RequestParam(name = "orderBy",defaultValue = "false") Boolean orderBy
 
-
     ){
         BaseApiResponse<List<Expense>> response = BaseApiResponse.<List<Expense>>builder()
-                .message("All expenses have been successfully founded.💓")
+                .message("All expenses have been successfully founded.")
                 .payload(expenseService.getAllExpense(page,size,sortBy, orderBy))
-
                 .status(HttpStatus.OK)
                 .time(new Timestamp(System.currentTimeMillis()))
                 .build();

@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestExceptionCustom("Your confirm password does not match with your password");
         }
         userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-
         String otp = String.valueOf(otpService.generateOTP(userRequest.getEmail()));
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(userRequest.getEmail());
@@ -60,7 +59,6 @@ public class UserServiceImpl implements UserService {
         javaMailSender.send(mailMessage);
         User user = userRepository.register(userRequest);
         if (user != null) {
-
             otpRepository.addNewOtp
                     (
                             otp,

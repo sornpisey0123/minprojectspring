@@ -1,5 +1,6 @@
 package com.kid.minprojectspringg1btb.service.serviceImpl;
 
+import com.kid.minprojectspringg1btb.exception.BadRequestExceptionCustom;
 import com.kid.minprojectspringg1btb.exception.NotFoundExceptionCustom;
 import com.kid.minprojectspringg1btb.model.dto.request.ExpenseRequest;
 import com.kid.minprojectspringg1btb.model.entity.Expense;
@@ -49,6 +50,15 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public List<Expense> getAllExpense(Integer page, Integer size, String sortBy, Boolean orderBy) {
+        if(page <= 0 && size <= 0){
+            throw new BadRequestExceptionCustom("page & size must be greater than 0");
+        }
+        if (page <= 0){
+            throw new BadRequestExceptionCustom("page must be greater than 0");
+        }
+        if (size <= 0){
+            throw new BadRequestExceptionCustom("size must be greater than 0");
+        }
         String orderString;
         if(orderBy){
              orderString = "desc";
