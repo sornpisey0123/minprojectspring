@@ -2,7 +2,10 @@ package com.kid.minprojectspringg1btb.repository;
 
 import com.kid.minprojectspringg1btb.model.dto.request.CategoryRequest;
 import com.kid.minprojectspringg1btb.model.dto.response.CategoryResponse;
+import com.kid.minprojectspringg1btb.model.entity.Category;
 import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 @Mapper
 public interface CategoryRepository {
@@ -27,4 +30,19 @@ public interface CategoryRepository {
             RETURNING category_id
             """)
     Integer addNewCategory(@Param("req") CategoryRequest categoryRequest, Integer userId);
+
+
+    @Delete("DELETE FROM categories WHERE category_id = #{categoryId}")
+    Boolean removeCategory(Integer categoryId);
+
+    @Select("UPDATE categories " +
+            "SET name = #{req.name} ,description = #{req.description} " +
+            "WHERE category_id = #{categoryId} " +
+            "RETURNING category_id")
+    Integer editCategory(@Param("req") CategoryRequest categoryRequest, Integer categoryId);
+
+
+    @Select("SELECT * FROM categories LIMIT #{size} OFFSET #{size} * (#{page} -1)")
+    @ResultMap("categoryMapping")
+    List<CategoryResponse> getCategoryList(Integer page, Integer size);
 }
