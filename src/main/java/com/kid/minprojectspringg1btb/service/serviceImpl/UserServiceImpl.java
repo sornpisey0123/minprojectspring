@@ -1,6 +1,7 @@
 package com.kid.minprojectspringg1btb.service.serviceImpl;
 
 import com.kid.minprojectspringg1btb.exception.BadRequestExceptionCustom;
+import com.kid.minprojectspringg1btb.model.dto.request.AuthRequest;
 import com.kid.minprojectspringg1btb.model.dto.request.UserRequest;
 import com.kid.minprojectspringg1btb.model.dto.response.UserResponse;
 import com.kid.minprojectspringg1btb.model.entity.User;
@@ -76,5 +77,12 @@ public class UserServiceImpl implements UserService {
             otpRepository.updateVerifyOtp(otp);
         }
         return otpService.verify(otp);
+    }
+
+    //verify login
+    @Override
+    public Boolean login(AuthRequest authRequest) {
+        Integer userId = userRepository.getUserIdByEmail(authRequest.getEmail());
+        return otpRepository.checkVerifiedUserByUserId(userId);
     }
 }

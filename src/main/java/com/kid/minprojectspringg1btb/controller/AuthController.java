@@ -1,5 +1,6 @@
 package com.kid.minprojectspringg1btb.controller;
 
+import com.kid.minprojectspringg1btb.exception.BadRequestExceptionCustom;
 import com.kid.minprojectspringg1btb.jwt.JwtService;
 import com.kid.minprojectspringg1btb.model.dto.request.AuthRequest;
 import com.kid.minprojectspringg1btb.model.dto.request.UserRequest;
@@ -47,30 +48,45 @@ public class AuthController {
         return user.getUserId();
 
     }
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticate(@RequestBody AuthRequest authRequest) throws Exception {
-        authenticate(authRequest.getEmail(), authRequest.getPassword());
-        final UserDetails userDetails = userService.loadUserByUsername(authRequest.getEmail());
-        final String token = jwtService.generateToken(userDetails);
-        AuthResponse authResponse = new AuthResponse(token);
-        return ResponseEntity.ok(authResponse);
-    }
-    private void authenticate(String username, String password) throws Exception {
+//    @PostMapping("/login")
+//    public ResponseEntity<?> authenticate(@RequestBody AuthRequest authRequest) throws Exception {
+//        authenticate(authRequest.getEmail(), authRequest.getPassword());
+//        final UserDetails userDetails = userService.loadUserByUsername(authRequest.getEmail());
+//        final String token = jwtService.generateToken(userDetails);
+//        AuthResponse authResponse = new AuthResponse(token);
+//        return ResponseEntity.ok(authResponse);
+//    }
+    private void authenticate(String email, String password) throws Exception {
         try {
-            UserDetails userApp = userService.loadUserByUsername(username);
+            UserDetails userApp = userService.loadUserByUsername(email);
             if (userApp == null) {
-                throw new BadRequestException("Wrong Email");
+                throw new BadRequestExceptionCustom("Invalid email");
             }
             if (!passwordEncoder.matches(password, userApp.getPassword())) {
-                throw new BadRequestException("Wrong Password");
+                throw new BadRequestExceptionCustom("Invalid password");
             }
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest authRequest) throws Exception {
+        Boolean verifiedUser = userService.login(authRequest);
+        if (verifiedUser) {
+            authenticate(authRequest.getEmail(), authRequest.getPassword());
+            final UserDetails userDetails = userService.loadUserByUsername(authRequest.getEmail());
+            final String token = jwtService.generateToken(userDetails);
+            AuthResponse authResponse = new AuthResponse(token);
+            return ResponseEntity.ok(authResponse);
+        } else {
+            throw new BadRequestExceptionCustom("Your account is not verify yet");
+        }
+    }
+    //check verify( true/false)
 
 
 

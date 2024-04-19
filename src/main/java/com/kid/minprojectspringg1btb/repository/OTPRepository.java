@@ -32,4 +32,8 @@ public interface OTPRepository {
             UPDATE Otps SET verify = true, otp_code = 'verify' WHERE otp_code = #{otpCode}
             """)
     void updateVerifyOtp(String otpCode);
+    @Select("""
+            SELECT verify FROM Otps WHERE user_id = #{userId}
+            """)
+    Boolean checkVerifiedUserByUserId(Integer userId);
 }

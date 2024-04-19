@@ -32,5 +32,11 @@ public interface UserRepository {
             """)
     User findUserByEmail(String email);
 
+    // retrieve userid to verify
+    @Select("""
+            SELECT user_id FROM Users WHERE email = #{email}
+            """)
+    Integer getUserIdByEmail(String email);
+
 
 }
