@@ -9,4 +9,6 @@ public interface UserService extends UserDetailsService {
     UserResponse register(UserRequest userRequest);
     String verify(String otp);
     Boolean login(AuthRequest authRequest);
+    Boolean resend(String email);
+
 }

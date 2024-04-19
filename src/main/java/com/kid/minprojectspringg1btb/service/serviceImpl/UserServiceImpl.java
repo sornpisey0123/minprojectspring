@@ -1,6 +1,7 @@
 package com.kid.minprojectspringg1btb.service.serviceImpl;
 
 import com.kid.minprojectspringg1btb.exception.BadRequestExceptionCustom;
+import com.kid.minprojectspringg1btb.exception.NotFoundExceptionCustom;
 import com.kid.minprojectspringg1btb.model.dto.request.AuthRequest;
 import com.kid.minprojectspringg1btb.model.dto.request.UserRequest;
 import com.kid.minprojectspringg1btb.model.dto.response.UserResponse;
@@ -85,4 +86,23 @@ public class UserServiceImpl implements UserService {
         Integer userId = userRepository.getUserIdByEmail(authRequest.getEmail());
         return otpRepository.checkVerifiedUserByUserId(userId);
     }
+//    resend email
+    @Override
+    public Boolean resend(String email){
+        if(userRepository.findUserByEmail(email) != null){
+            String otp = String.valueOf(otpService.generateOTP(email));
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(email);
+            mailMessage.setSubject("Verify your email with opt code");
+            mailMessage.setText(otp);
+            javaMailSender.send(mailMessage);
+            Integer userId = userRepository.getUserIdByEmail(email);
+             otpRepository.updateOtpByUserId(otp, userId);
+            System.out.println(otp);
+            return true;
+        }else{
+            throw new NotFoundExceptionCustom("Invalid Email");
+        }
+    }
+
 }

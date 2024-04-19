@@ -21,6 +21,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.StyledEditorKit;
+
 @RestController
 @RequestMapping("/api/v1/auths")
 public class AuthController {
@@ -87,8 +89,17 @@ public class AuthController {
         }
     }
     //check verify( true/false)
+    @PostMapping("/resend")
+    public ResponseEntity<String> resendEmail( @RequestParam String email) throws Exception {
+        System.out.println(email);
+        Boolean isValidUser = userService.resend(email);
+        if(isValidUser){
 
-
+//            userService.verify(opt);
+            return ResponseEntity.ok("Resend otp code successful");
+        }
+        return ResponseEntity.badRequest().body("Invalid Email");
+    }
 
 
 }
