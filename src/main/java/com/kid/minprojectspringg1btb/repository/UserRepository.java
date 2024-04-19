@@ -37,6 +37,10 @@ public interface UserRepository {
             SELECT user_id FROM Users WHERE email = #{email}
             """)
     Integer getUserIdByEmail(String email);
-
+    //update password by Email
+    @Select("""
+    UPDATE users SET password  =  #{password} WHERE email = #{email}
+    """)
+    Boolean forgetPassword(String password, String email);
 
 }

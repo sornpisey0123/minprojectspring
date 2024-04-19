@@ -3,6 +3,7 @@ package com.kid.minprojectspringg1btb.controller;
 import com.kid.minprojectspringg1btb.exception.BadRequestExceptionCustom;
 import com.kid.minprojectspringg1btb.jwt.JwtService;
 import com.kid.minprojectspringg1btb.model.dto.request.AuthRequest;
+import com.kid.minprojectspringg1btb.model.dto.request.ForgetRequest;
 import com.kid.minprojectspringg1btb.model.dto.request.UserRequest;
 import com.kid.minprojectspringg1btb.model.dto.response.AuthResponse;
 import com.kid.minprojectspringg1btb.model.dto.response.UserResponse;
@@ -101,5 +102,13 @@ public class AuthController {
         return ResponseEntity.badRequest().body("Invalid Email");
     }
 
+    @PutMapping("/forget")
+    public ResponseEntity<String> forgetPassword(@RequestParam String email,@Valid @RequestBody ForgetRequest forgetRequest) throws Exception {
+        if(userService.forgetPassword(email, forgetRequest)){
+            return ResponseEntity.ok("your password is reset successful");
+        }
+    return ResponseEntity.badRequest().body("Your account is not verify yet ");
+
+    }
 
 }

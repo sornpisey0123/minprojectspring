@@ -3,6 +3,7 @@ package com.kid.minprojectspringg1btb.service.serviceImpl;
 import com.kid.minprojectspringg1btb.exception.BadRequestExceptionCustom;
 import com.kid.minprojectspringg1btb.exception.NotFoundExceptionCustom;
 import com.kid.minprojectspringg1btb.model.dto.request.AuthRequest;
+import com.kid.minprojectspringg1btb.model.dto.request.ForgetRequest;
 import com.kid.minprojectspringg1btb.model.dto.request.UserRequest;
 import com.kid.minprojectspringg1btb.model.dto.response.UserResponse;
 import com.kid.minprojectspringg1btb.model.entity.User;
@@ -102,6 +103,22 @@ public class UserServiceImpl implements UserService {
             return true;
         }else{
             throw new NotFoundExceptionCustom("Invalid Email");
+        }
+    }
+
+    @Override
+    public Boolean forgetPassword(String email, ForgetRequest forgetRequest) {
+        Integer userId = userRepository.getUserIdByEmail(email);
+        if(userRepository.findUserByEmail(email) != null && otpRepository.checkVerifiedUserByUserId(userId)){
+            if (!forgetRequest.getPassword().equals(forgetRequest.getConfirmPassword())) {
+                throw new BadRequestExceptionCustom("Your confirm password does not match with your password");
+            }else{
+               userRepository.forgetPassword(bCryptPasswordEncoder.encode(forgetRequest.getPassword()) , email);
+                return true;
+            }
+
+        }else{
+            throw new NotFoundExceptionCustom("Email not verify yet ");
         }
     }
 

@@ -1,6 +1,7 @@
 package com.kid.minprojectspringg1btb.service;
 
 import com.kid.minprojectspringg1btb.model.dto.request.AuthRequest;
+import com.kid.minprojectspringg1btb.model.dto.request.ForgetRequest;
 import com.kid.minprojectspringg1btb.model.dto.request.UserRequest;
 import com.kid.minprojectspringg1btb.model.dto.response.UserResponse;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,5 +11,6 @@ public interface UserService extends UserDetailsService {
     String verify(String otp);
     Boolean login(AuthRequest authRequest);
     Boolean resend(String email);
+    Boolean forgetPassword(String email, ForgetRequest forgetRequest);
 
 }
