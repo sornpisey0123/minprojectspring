@@ -1,5 +1,6 @@
 package com.kid.minprojectspringg1btb.service.serviceImpl;
 
+import com.kid.minprojectspringg1btb.exception.BadRequestExceptionCustom;
 import com.kid.minprojectspringg1btb.exception.NotFoundExceptionCustom;
 import com.kid.minprojectspringg1btb.model.dto.request.CategoryRequest;
 import com.kid.minprojectspringg1btb.model.dto.response.CategoryResponse;
@@ -55,6 +56,14 @@ public class CategoryServiceImpl implements CategoryService {
     //get all
     @Override
     public List<CategoryResponse> getAllCategories(Integer page, Integer size) {
+        if(page <= 0 && size <= 0){
+            throw new BadRequestExceptionCustom("page & size must be greater than 0");
+        }
+        if (page <= 0){
+            throw new BadRequestExceptionCustom("page must be greater than 0");
+        }if (size <= 0){
+            throw new BadRequestExceptionCustom("size must be greater than 0");
+        }
         return categoryRepository.getCategoryList(page,size);
     }
 }

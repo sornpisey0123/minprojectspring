@@ -1,6 +1,7 @@
 package com.kid.minprojectspringg1btb.repository;
 
 import com.kid.minprojectspringg1btb.model.dto.request.CategoryRequest;
+import com.kid.minprojectspringg1btb.model.dto.response.CategoryExpenseResponse;
 import com.kid.minprojectspringg1btb.model.dto.response.CategoryResponse;
 import com.kid.minprojectspringg1btb.model.entity.Category;
 import org.apache.ibatis.annotations.*;
@@ -18,11 +19,23 @@ public interface CategoryRepository {
             value = {
                     @Result(property = "categoryId", column = "category_id"),
                     @Result(property = "user", column = "user_id",
-                            one = @One(select = "com.kid.minprojectspringg1btb.repository.UserRepository.findUserById")
+                            one = @One(select = "com.kid.minprojectspringg1btb.repository.UserRepository.findUserCategoryById")
                     )
             }
     )
     CategoryResponse getCategoryById(Integer categoryId);
+
+
+    @Select("""
+            SELECT * FROM categories WHERE category_id = #{categoryId}
+            """)
+    @Results(
+            id = "categoryExpenseMapping",
+            value = {
+                    @Result(property = "categoryId", column = "category_id"),
+            }
+    )
+    CategoryExpenseResponse getCategoryExpenseById(Integer categoryId);
 
 
     @Select("""

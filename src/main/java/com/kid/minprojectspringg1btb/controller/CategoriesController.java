@@ -21,9 +21,7 @@ import java.util.List;
 @RequestMapping("/api/v1/categories")
 @SecurityRequirement(name = "bearerAuth")
 public class CategoriesController {
-
     private final CategoryService categoryService;
-
     public CategoriesController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }

@@ -1,6 +1,7 @@
 package com.kid.minprojectspringg1btb.repository;
 
 import com.kid.minprojectspringg1btb.model.dto.request.UserRequest;
+import com.kid.minprojectspringg1btb.model.dto.response.UserResponse;
 import com.kid.minprojectspringg1btb.model.entity.User;
 import org.apache.ibatis.annotations.*;
 
@@ -49,6 +50,16 @@ public interface UserRepository {
     @ResultMap("authMapping")
     User findUserById(Integer userId);
 
-
+    @Select("""
+            SELECT * FROM Users WHERE user_id = #{userId}
+            """)
+    @Results(
+            id = "userMapping",
+            value = {
+                    @Result(property = "userId", column = "user_id"),
+                    @Result(property = "profileImage", column = "profile_image")
+            }
+    )
+    UserResponse findUserCategoryById(Integer userId);
 
 }

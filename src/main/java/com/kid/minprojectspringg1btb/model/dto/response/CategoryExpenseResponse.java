@@ -1,6 +1,5 @@
 package com.kid.minprojectspringg1btb.model.dto.response;
 
-import com.kid.minprojectspringg1btb.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class CategoryResponse {
+public class CategoryExpenseResponse {
     private Integer categoryId;
     private String name;
     private String description;
-    private UserResponse user;
 }
