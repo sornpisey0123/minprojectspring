@@ -43,4 +43,12 @@ public interface UserRepository {
     """)
     Boolean forgetPassword(String password, String email);
 
+    @Select("""
+            SELECT * FROM Users WHERE user_id = #{userId}
+            """)
+    @ResultMap("authMapping")
+    User findUserById(Integer userId);
+
+
+
 }
