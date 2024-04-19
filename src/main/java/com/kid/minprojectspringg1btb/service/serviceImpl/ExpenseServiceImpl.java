@@ -2,12 +2,10 @@ package com.kid.minprojectspringg1btb.service.serviceImpl;
 
 import com.kid.minprojectspringg1btb.exception.NotFoundExceptionCustom;
 import com.kid.minprojectspringg1btb.model.dto.request.ExpenseRequest;
-import com.kid.minprojectspringg1btb.model.dto.request.UserRequest;
-import com.kid.minprojectspringg1btb.model.dto.response.CategoryResponse;
 import com.kid.minprojectspringg1btb.model.entity.Expense;
-import com.kid.minprojectspringg1btb.repository.CategoryRepository;
 import com.kid.minprojectspringg1btb.repository.ExpenseRepository;
 import com.kid.minprojectspringg1btb.repository.UserRepository;
+import com.kid.minprojectspringg1btb.service.CategoryService;
 import com.kid.minprojectspringg1btb.service.ExpenseService;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +17,18 @@ public class ExpenseServiceImpl implements ExpenseService {
     private final ExpenseRepository expenseRepository;
     private final UserRepository userRepository;
 
-    private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
-    public ExpenseServiceImpl(ExpenseRepository expenseRepository, UserRepository userRepository, CategoryRepository categoryRepository) {
+    public ExpenseServiceImpl(ExpenseRepository expenseRepository, UserRepository userRepository, CategoryService categoryService) {
         this.expenseRepository = expenseRepository;
         this.userRepository = userRepository;
-        this.categoryRepository = categoryRepository;
+        this.categoryService = categoryService;
     }
 
     @Override
     public Integer addNewExpense(ExpenseRequest expenseRequest, String email) {
         Integer  userId = userRepository.getUserIdByEmail(email);
-//        if (categoryRepository.getCategoryById(expenseRepository.getExpenseById()))
-        // exception category id
+        categoryService.getCategoryById(expenseRequest.getCategoryId());
 
         return expenseRepository.addNewExpense(expenseRequest,userId);
     }
@@ -46,9 +43,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Boolean deleteExpenseById(Integer expenseId) {
-        if (expenseRepository.getExpenseById(expenseId) == null){
-            throw new NotFoundExceptionCustom("Expense id "+expenseId+ " Not Found");
-        }
+        getExpenseById(expenseId);
         return expenseRepository.removeExpenseById(expenseId);
     }
 
@@ -66,6 +61,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 
     @Override
     public Integer updateExpenseById(ExpenseRequest expenseRequest, Integer expenseId) {
+        getExpenseById(expenseId);
+        categoryService.getCategoryById(expenseRequest.getCategoryId());
         return expenseRepository.editExpenseById(expenseRequest,expenseId);
     }
 
